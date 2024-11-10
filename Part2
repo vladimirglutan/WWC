@@ -1,0 +1,50 @@
+def run_wwc_program(arr, input_value):
+    pointer = 0  
+
+    def get_value(param, mode):
+        return param if mode == 1 else arr[param]
+
+    while True:
+        instruction = arr[pointer]
+        opcode = instruction % 100
+        modes = [instruction // 100 % 10, instruction // 1000 % 10, instruction // 10000 % 10]
+        
+        if opcode == 1:  
+            pp1 = get_value(arr[pointer + 1], modes[0])
+            pp2 = get_value(arr[pointer + 2], modes[1])
+            arr[arr[pointer + 3]] = pp1 + pp2
+            pointer += 4
+            
+        elif opcode == 2:  
+            pp1 = get_value(arr[pointer + 1], modes[0])
+            pp2 = get_value(arr[pointer + 2], modes[1])
+            arr[arr[pointer + 3]] = pp1 * pp2
+            pointer += 4
+
+        elif opcode == 3: 
+          if arr[pointer + 1] < len(arr):
+            arr[arr[pointer + 1]] = input_value
+            arr[arr[pointer + 1]] = input_value
+            pointer += 2
+          else:
+            print("Invalid memory address for input.")
+            break
+            
+        elif opcode == 4:  
+            output_value = get_value(arr[pointer + 1], modes[0])
+            print("Output:", output_value)  
+            pointer += 2
+
+        elif opcode == 99:  # Halt
+            break
+        
+        else:
+            raise Exception(f"Unknown opcode {opcode} encountered.")
+
+
+program = [
+    2, 225, 1, 225, 6, 6, 1100, 1, 238, 225, 104, 0, 1102, 72, 20, 224, 1001, 224, -1440, 224,
+    
+]
+
+run_wwc_program(program, input_value=10)
